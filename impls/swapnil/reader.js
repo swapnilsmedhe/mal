@@ -1,4 +1,11 @@
-const { MalSymbol, MalValue, MalList, MalVector, MalNil } = require("./types");
+const {
+  MalSymbol,
+  MalValue,
+  MalList,
+  MalVector,
+  MalNil,
+  MalBool,
+} = require("./types");
 
 class Reader {
   #tokens;
@@ -57,19 +64,21 @@ const readVector = (reader) => {
 const readAtom = (reader) => {
   const token = reader.next();
   const isNumber = token.match(/^-?[0-9]+$/);
+
   if (isNumber) {
     return new MalValue(parseInt(token));
   }
-  if (token === "true") {
-    return true;
+
+  switch (token) {
+    case "true":
+      return new MalBool(true);
+    case "false":
+      return new MalBool(false);
+    case "nil":
+      return new MalNil();
+    default:
+      return new MalSymbol(token);
   }
-  if (token === "false") {
-    return false;
-  }
-  if (token === "nil") {
-    return new MalNil();
-  }
-  return new MalSymbol(token);
 };
 
 const readForm = (reader) => {
