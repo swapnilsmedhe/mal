@@ -21,6 +21,10 @@ class MalList extends MalValue {
     super(value);
   }
 
+  isEmpty() {
+    return this.value.length === 0;
+  }
+
   printString() {
     return "(" + this.value.map((x) => x.printString()).join(" ") + ")";
   }
@@ -47,6 +51,12 @@ class MalNil extends MalValue {
 }
 
 class MalBool extends MalValue {
+  constructor(value) {
+    super(value);
+  }
+}
+
+class MalObject extends MalValue {
   constructor(value) {
     super(value);
   }
