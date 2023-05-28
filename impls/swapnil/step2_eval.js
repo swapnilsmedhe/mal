@@ -9,14 +9,10 @@ const rl = readline.createInterface({
 });
 
 const env = {
-  "+": (...numbers) =>
-    numbers.reduce((a, b) => new MalValue(a.value + b.value), new MalValue(0)),
-  "-": (...numbers) =>
-    numbers.reduce((a, b) => new MalValue(a.value - b.value)),
-  "*": (...numbers) =>
-    numbers.reduce((a, b) => new MalValue(a.value * b.value)),
-  "/": (...numbers) =>
-    numbers.reduce((a, b) => new MalValue(Math.floor(a.value / b.value))),
+  "+": (...numbers) => numbers.reduce((a, b) => a + b, 0),
+  "-": (...numbers) => numbers.reduce((a, b) => a - b),
+  "*": (...numbers) => numbers.reduce((a, b) => a * b),
+  "/": (...numbers) => numbers.reduce((a, b) => Math.floor(a / b)),
 };
 
 const READ = (input) => readString(input);

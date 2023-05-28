@@ -66,7 +66,7 @@ const readAtom = (reader) => {
   const isNumber = token.match(/^-?[0-9]+$/);
 
   if (isNumber) {
-    return new MalValue(parseInt(token));
+    return parseInt(token);
   }
 
   switch (token) {

@@ -5,7 +5,7 @@ class MalValue {
     this.value = value;
   }
 
-  printString() {
+  toString() {
     return this.value.toString();
   }
 }
@@ -25,8 +25,8 @@ class MalList extends MalValue {
     return this.value.length === 0;
   }
 
-  printString() {
-    return "(" + this.value.map((x) => x.printString()).join(" ") + ")";
+  toString() {
+    return "(" + this.value.map((x) => x.toString()).join(" ") + ")";
   }
 }
 
@@ -35,8 +35,8 @@ class MalVector extends MalValue {
     super(value);
   }
 
-  printString() {
-    return "[" + this.value.map((x) => x.printString()).join(" ") + "]";
+  toString() {
+    return "[" + this.value.map((x) => x.toString()).join(" ") + "]";
   }
 }
 
@@ -45,7 +45,7 @@ class MalNil extends MalValue {
     super(null);
   }
 
-  printString() {
+  toString() {
     return "nil";
   }
 }
