@@ -52,7 +52,7 @@ const EVAL = (ast, env) => {
         letEnv.set(binding, EVAL(value, letEnv));
       }
 
-      return EVAL(ast.value[2], letEnv);
+      return ast.value[2] ? EVAL(ast.value[2], letEnv) : new MalNil();
   }
 
   const [fn, ...args] = evalAst(ast, env).value;
