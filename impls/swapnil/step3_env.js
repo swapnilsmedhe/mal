@@ -1,25 +1,19 @@
 const readline = require("readline");
 const { readString } = require("./reader");
 const { printString } = require("./printer");
-const { MalSymbol, MalList, MalValue, MalVector } = require("./types");
+const { MalSymbol, MalList, MalValue, MalVector, MalNil } = require("./types");
+const { Env } = require("./env");
 
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
 });
 
-const env = {
-  "+": (...numbers) => numbers.reduce((a, b) => a + b, 0),
-  "-": (...numbers) => numbers.reduce((a, b) => a - b),
-  "*": (...numbers) => numbers.reduce((a, b) => a * b),
-  "/": (...numbers) => numbers.reduce((a, b) => Math.floor(a / b)),
-};
-
 const READ = (input) => readString(input);
 
 const evalAst = (ast, env) => {
   if (ast instanceof MalSymbol) {
-    return env[ast.value];
+    return env.get(ast);
   }
 
   if (ast instanceof MalList) {
@@ -44,11 +38,27 @@ const EVAL = (ast, env) => {
     return ast;
   }
 
+  switch (ast.value[0].value) {
+    case "def!":
+      env.set(ast.value[1], EVAL(ast.value[2], env));
+      return env.get(ast.value[1]);
+  }
+
   const [fn, ...args] = evalAst(ast, env).value;
+
   return fn.apply(null, args);
 };
 
 const PRINT = (malValue) => printString(malValue);
+
+const env = new Env();
+
+env.set(new MalSymbol("+"), (...numbers) => numbers.reduce((a, b) => a + b, 0));
+env.set(new MalSymbol("-"), (...numbers) => numbers.reduce((a, b) => a - b));
+env.set(new MalSymbol("*"), (...numbers) => numbers.reduce((a, b) => a * b));
+env.set(new MalSymbol("/"), (...numbers) =>
+  numbers.reduce((a, b) => Math.floor(a / b))
+);
 
 const rep = (input) => PRINT(EVAL(READ(input), env));
 
