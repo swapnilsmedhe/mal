@@ -79,9 +79,11 @@ env.set(new MalSymbol("*"), (...numbers) => numbers.reduce((a, b) => a * b));
 env.set(new MalSymbol("/"), (...numbers) =>
   numbers.reduce((a, b) => Math.floor(a / b))
 );
-env.set(new MalSymbol(">"), (...numbers) => numbers.reduce((a, b) => a > b));
-env.set(new MalSymbol("<"), (...numbers) => numbers.reduce((a, b) => a < b));
-env.set(new MalSymbol("="), (...numbers) => numbers.reduce((a, b) => a === b));
+env.set(new MalSymbol(">"), (a, b) => a > b);
+env.set(new MalSymbol("<"), (a, b) => a < b);
+env.set(new MalSymbol("="), (a, b) => a === b);
+env.set(new MalSymbol("<="), (a, b) => a <= b);
+env.set(new MalSymbol(">="), (a, b) => a >= b);
 
 const rep = (input) => PRINT(EVAL(READ(input), env));
 
