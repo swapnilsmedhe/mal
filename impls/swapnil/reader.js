@@ -71,9 +71,9 @@ const readAtom = (reader) => {
 
   switch (token) {
     case "true":
-      return new MalBool(true);
+      return true;
     case "false":
-      return new MalBool(false);
+      return false;
     case "nil":
       return new MalNil();
     default:
