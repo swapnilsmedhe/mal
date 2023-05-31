@@ -1,7 +1,7 @@
 const readline = require("readline");
 const { readString } = require("./reader");
 const { printString } = require("./printer");
-const { MalSymbol, MalList, MalValue, MalVector, MalNil } = require("./types");
+const { MalSymbol, MalList, MalVector, MalNil } = require("./types");
 const { Env } = require("./env");
 
 const rl = readline.createInterface({

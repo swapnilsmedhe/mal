@@ -50,16 +50,10 @@ class MalNil extends MalValue {
   }
 }
 
-class MalBool extends MalValue {
-  constructor(value) {
-    super(value);
-  }
-}
-
 class MalObject extends MalValue {
   constructor(value) {
     super(value);
   }
 }
 
-module.exports = { MalSymbol, MalValue, MalList, MalVector, MalNil, MalBool };
+module.exports = { MalSymbol, MalValue, MalList, MalVector, MalNil };

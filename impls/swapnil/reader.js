@@ -1,11 +1,4 @@
-const {
-  MalSymbol,
-  MalValue,
-  MalList,
-  MalVector,
-  MalNil,
-  MalBool,
-} = require("./types");
+const { MalSymbol, MalList, MalVector, MalNil } = require("./types");
 
 class Reader {
   #tokens;
