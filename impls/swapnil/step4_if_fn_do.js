@@ -60,7 +60,7 @@ const EVAL = (ast, env) => {
     case "if":
       const predicateResult = EVAL(ast.value[1], env);
 
-      return !(predicateResult instanceof MalNil) && predicateResult
+      return !(predicateResult instanceof MalNil) && predicateResult !== false
         ? EVAL(ast.value[2], env)
         : EVAL(ast.value[3], env);
   }
@@ -79,6 +79,9 @@ env.set(new MalSymbol("*"), (...numbers) => numbers.reduce((a, b) => a * b));
 env.set(new MalSymbol("/"), (...numbers) =>
   numbers.reduce((a, b) => Math.floor(a / b))
 );
+env.set(new MalSymbol(">"), (...numbers) => numbers.reduce((a, b) => a > b));
+env.set(new MalSymbol("<"), (...numbers) => numbers.reduce((a, b) => a < b));
+env.set(new MalSymbol("="), (...numbers) => numbers.reduce((a, b) => a === b));
 
 const rep = (input) => PRINT(EVAL(READ(input), env));
 
