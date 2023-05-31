@@ -11,6 +11,16 @@ const rl = readline.createInterface({
 
 const READ = (input) => readString(input);
 
+const createClosureFunction = (env, ast) => {
+  return (...args) => {
+    const fnEnv = new Env(env);
+    const bindings = ast.value[1].value;
+
+    bindings.forEach((binding, index) => fnEnv.set(binding, args[index]));
+    return EVAL(ast.value[2], fnEnv);
+  };
+};
+
 const evalAst = (ast, env) => {
   if (ast instanceof MalSymbol) {
     return env.get(ast);
@@ -63,6 +73,11 @@ const EVAL = (ast, env) => {
       return !(predicateResult instanceof MalNil) && predicateResult !== false
         ? EVAL(ast.value[2], env)
         : EVAL(ast.value[3], env);
+
+    case "fn*":
+      const closureFn = createClosureFunction(env, ast);
+      closureFn.toString = () => "#function";
+      return closureFn;
   }
 
   const [fn, ...args] = evalAst(ast, env).value;
