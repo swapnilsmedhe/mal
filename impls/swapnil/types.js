@@ -67,7 +67,7 @@ class MalList extends MalIterable {
   }
 }
 
-class MalVector extends MalValue {
+class MalVector extends MalIterable {
   constructor(value) {
     super(value);
   }
