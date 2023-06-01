@@ -35,6 +35,10 @@ class MalIterable extends MalValue {
     super(value);
   }
 
+  isEmpty() {
+    return this.value.length === 0;
+  }
+
   length() {
     return this.value.length;
   }
@@ -56,10 +60,6 @@ class MalIterable extends MalValue {
 class MalList extends MalIterable {
   constructor(value) {
     super(value);
-  }
-
-  isEmpty() {
-    return this.value.length === 0;
   }
 
   toString() {
