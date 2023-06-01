@@ -11,7 +11,7 @@ class Env {
   }
 
   find(symbol) {
-    if (this.data[symbol.value]) {
+    if (this.data[symbol.value] !== undefined) {
       return this;
     }
 

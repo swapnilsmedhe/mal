@@ -52,6 +52,7 @@ const EVAL = (ast, env) => {
     case "def!":
       env.set(ast.value[1], EVAL(ast.value[2], env));
       return env.get(ast.value[1]);
+
     case "let*":
       const letEnv = new Env(env);
       const bindingList = ast.value[1];
@@ -68,7 +69,7 @@ const EVAL = (ast, env) => {
       const doLists = ast.value.slice(1);
 
       const lastList = doLists.reduce(
-        (result, statement) => evalAst(statement, env),
+        (_, statement) => evalAst(statement, env),
         ""
       );
       return EVAL(lastList, env);
