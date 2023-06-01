@@ -27,7 +27,7 @@ const ns = {
 
   "empty?": (list) => list.isEmpty(),
 
-  count: (list) => list.length(),
+  count: (list) => (list instanceof MalNil ? 0 : list.length()),
 };
 
 module.exports = { ns };

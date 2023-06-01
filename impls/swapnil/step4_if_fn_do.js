@@ -78,9 +78,14 @@ const EVAL = (ast, env) => {
     case "if":
       const predicateResult = EVAL(ast.value[1], env);
 
-      return !(predicateResult instanceof MalNil) && predicateResult !== false
-        ? EVAL(ast.value[2], env)
-        : EVAL(ast.value[3], env);
+      const listToExecute =
+        !(predicateResult instanceof MalNil) && predicateResult !== false
+          ? ast.value[2]
+          : ast.value[3];
+
+      return listToExecute !== undefined
+        ? EVAL(listToExecute, env)
+        : new MalNil();
 
     case "fn*":
       const closureFn = createClosureFunction(env, ast);
