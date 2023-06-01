@@ -65,7 +65,13 @@ const EVAL = (ast, env) => {
       return ast.value[2] ? EVAL(ast.value[2], letEnv) : new MalNil();
 
     case "do":
-      return evalAst(ast);
+      const doLists = ast.value.slice(1);
+
+      const lastList = doLists.reduce(
+        (result, statement) => evalAst(statement, env),
+        ""
+      );
+      return EVAL(lastList, env);
 
     case "if":
       const predicateResult = EVAL(ast.value[1], env);
