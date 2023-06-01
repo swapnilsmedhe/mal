@@ -1,3 +1,11 @@
+const deepEqual = (firstElement, secondElement) => {
+  if (firstElement instanceof MalValue && secondElement instanceof MalValue) {
+    return firstElement.equals(secondElement);
+  }
+
+  return firstElement === secondElement;
+};
+
 class MalValue {
   value;
 
@@ -8,6 +16,12 @@ class MalValue {
   toString() {
     return this.value.toString();
   }
+
+  equals(otherMalValue) {
+    return (
+      otherMalValue instanceof MalValue && this.value === otherMalValue.value
+    );
+  }
 }
 
 class MalSymbol extends MalValue {
@@ -16,7 +30,30 @@ class MalSymbol extends MalValue {
   }
 }
 
-class MalList extends MalValue {
+class MalIterable extends MalValue {
+  constructor(value) {
+    super(value);
+  }
+
+  length() {
+    return this.value.length;
+  }
+
+  get(position) {
+    return this.value[position];
+  }
+
+  equals(otherMalValue) {
+    if (!(otherMalValue instanceof MalIterable)) return false;
+    if (this.length() !== otherMalValue.length()) return false;
+
+    return this.value.every((element, index) =>
+      deepEqual(element, otherMalValue.get(index))
+    );
+  }
+}
+
+class MalList extends MalIterable {
   constructor(value) {
     super(value);
   }
