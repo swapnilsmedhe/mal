@@ -1,7 +1,13 @@
 const readline = require("readline");
 const { readString } = require("./reader");
 const { printString } = require("./printer");
-const { MalSymbol, MalList, MalVector, MalNil } = require("./types");
+const {
+  MalSymbol,
+  MalList,
+  MalVector,
+  MalNil,
+  MalFunction,
+} = require("./types");
 const { Env } = require("./env");
 const { ns } = require("./core");
 
@@ -13,13 +19,8 @@ const rl = readline.createInterface({
 const READ = (input) => readString(input);
 
 const createClosureFunction = (env, ast) => {
-  return (...args) => {
-    const fnEnv = new Env(env);
-    const bindings = ast.value[1].value;
-
-    bindings.forEach((binding, index) => fnEnv.set(binding, args[index]));
-    return EVAL(ast.value[2], fnEnv);
-  };
+  const [_, binds, fnBody] = ast.value;
+  return new MalFunction(fnBody, binds, env);
 };
 
 const evalDo = (ast, env) => {
@@ -101,12 +102,18 @@ const EVAL = (ast, env) => {
         break;
 
       case "fn*":
-        const closureFn = createClosureFunction(env, ast);
-        closureFn.toString = () => "#function";
-        return closureFn;
+        ast = createClosureFunction(env, ast);
+        break;
       default:
         const [fn, ...args] = evalAst(ast, env).value;
-        return fn.apply(null, args);
+
+        if (fn instanceof MalFunction) {
+          const oldEnv = fn.env;
+          env = new Env(oldEnv, fn.bindings.value, args);
+          ast = fn.value;
+        } else {
+          return fn.apply(null, args);
+        }
     }
   }
 };
