@@ -97,7 +97,7 @@ const EVAL = (ast, env) => {
   return fn.apply(null, args);
 };
 
-const PRINT = (malValue) => printString(malValue);
+const PRINT = (malValue) => printString(malValue, true);
 
 const initEnv = () => {
   const env = new Env();

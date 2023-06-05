@@ -1,4 +1,4 @@
-const { MalNil, MalList, MalValue, MalString } = require("./types");
+const { MalNil, MalList, MalValue, MalString, MalAtom } = require("./types");
 const { readStr } = require("./reader");
 const fs = require("fs");
 const { printString } = require("./printer");
@@ -32,9 +32,18 @@ const ns = {
 
   count: (list) => (list instanceof MalNil ? 0 : list.length()),
 
+  str: (...args) => {
+    return new MalString(args.map((arg) => printString(arg, false)).join(""));
+  },
+
   "read-string": (str) => readStr(printString(str)),
 
   slurp: (filename) => new MalString(fs.readFileSync(filename.value, "utf8")),
+
+  atom: (value) => new MalAtom(value),
+  "atom?": (value) => value instanceof MalAtom,
+  deref: (atom) => atom.deref(),
+  "reset!": (atom, value) => atom.reset(value),
 };
 
 module.exports = { ns };

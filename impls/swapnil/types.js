@@ -1,3 +1,11 @@
+const printString = (value, printReadably = false) => {
+  if (value instanceof MalValue) {
+    return value.toString(printReadably);
+  }
+
+  return value.toString();
+};
+
 const deepEqual = (firstElement, secondElement) => {
   if (firstElement instanceof MalValue && secondElement instanceof MalValue) {
     return firstElement.equals(secondElement);
@@ -16,7 +24,7 @@ class MalValue {
     this.value = value;
   }
 
-  toString() {
+  toString(printReadably = false) {
     return this.value.toString();
   }
 
@@ -65,8 +73,8 @@ class MalList extends MalIterable {
     super(value);
   }
 
-  toString() {
-    return "(" + this.value.map((x) => x.toString()).join(" ") + ")";
+  toString(printReadably = false) {
+    return "(" + this.value.map((x) => printString(x)).join(" ") + ")";
   }
 }
 
@@ -75,8 +83,8 @@ class MalVector extends MalIterable {
     super(value);
   }
 
-  toString() {
-    return "[" + this.value.map((x) => x.toString()).join(" ") + "]";
+  toString(printReadably = false) {
+    return "[" + this.value.map((x) => printString(x)).join(" ") + "]";
   }
 }
 
@@ -85,7 +93,7 @@ class MalNil extends MalValue {
     super(null);
   }
 
-  toString() {
+  toString(printReadably = false) {
     return "nil";
   }
 }
@@ -97,7 +105,7 @@ class MalFunction extends MalValue {
     this.env = env;
   }
 
-  toString() {
+  toString(printReadably = false) {
     return "#function";
   }
 }
@@ -118,7 +126,27 @@ class MalString extends MalValue {
         '"'
       );
     }
+
     return this.value;
+  }
+}
+
+class MalAtom extends MalValue {
+  constructor(value) {
+    super(value);
+  }
+
+  deref() {
+    return this.value;
+  }
+
+  reset(value) {
+    this.value = value;
+    return this.value;
+  }
+
+  toString(printReadably = false) {
+    return "(atom " + printString(this.value) + " )";
   }
 }
 
@@ -136,5 +164,6 @@ module.exports = {
   MalNil,
   MalFunction,
   MalString,
+  MalAtom,
   createMalString,
 };

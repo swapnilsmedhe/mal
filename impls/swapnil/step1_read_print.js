@@ -11,7 +11,7 @@ const READ = (input) => readStr(input);
 
 const EVAL = (input) => input;
 
-const PRINT = (malValue) => printString(malValue);
+const PRINT = (malValue) => printString(malValue, true);
 
 const rep = (input) => PRINT(EVAL(READ(input)));
 

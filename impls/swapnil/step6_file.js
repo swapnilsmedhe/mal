@@ -128,6 +128,13 @@ const initEnv = () => {
   }
 
   env.set(new MalSymbol("eval"), (ast) => EVAL(ast, env));
+
+  EVAL(
+    READ(
+      '(def! load-file (fn* (f) (eval (read-string (str "(do " (slurp f) "\nnil)")))))'
+    ),
+    env
+  );
   return env;
 };
 
