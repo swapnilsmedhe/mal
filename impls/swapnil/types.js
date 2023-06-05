@@ -6,6 +6,9 @@ const deepEqual = (firstElement, secondElement) => {
   return firstElement === secondElement;
 };
 
+const createMalString = (str) =>
+  str.replace(/\\(.)/g, (_, captured) => (captured === "n" ? "\n" : captured));
+
 class MalValue {
   value;
 
@@ -99,6 +102,26 @@ class MalFunction extends MalValue {
   }
 }
 
+class MalString extends MalValue {
+  constructor(value) {
+    super(value);
+  }
+
+  toString(printReadably = false) {
+    if (printReadably) {
+      return (
+        '"' +
+        this.value
+          .replace(/\\/g, "\\\\")
+          .replace(/"/g, '\\"')
+          .replace(/\n/g, "\\n") +
+        '"'
+      );
+    }
+    return this.value;
+  }
+}
+
 class MalObject extends MalValue {
   constructor(value) {
     super(value);
@@ -112,4 +135,6 @@ module.exports = {
   MalVector,
   MalNil,
   MalFunction,
+  MalString,
+  createMalString,
 };

@@ -1,5 +1,5 @@
 const readline = require("readline");
-const { readString } = require("./reader");
+const { readStr } = require("./reader");
 const { printString } = require("./printer");
 const { MalSymbol, MalList, MalVector, MalNil } = require("./types");
 const { Env } = require("./env");
@@ -10,7 +10,7 @@ const rl = readline.createInterface({
   output: process.stdout,
 });
 
-const READ = (input) => readString(input);
+const READ = (input) => readStr(input);
 
 const createClosureFunction = (env, ast) => {
   return (...args) => {

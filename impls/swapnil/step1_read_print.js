@@ -1,5 +1,5 @@
 const readline = require("readline");
-const { readString } = require("./reader");
+const { readStr } = require("./reader");
 const { printString } = require("./printer");
 
 const rl = readline.createInterface({
@@ -7,7 +7,7 @@ const rl = readline.createInterface({
   output: process.stdout,
 });
 
-const READ = (input) => readString(input);
+const READ = (input) => readStr(input);
 
 const EVAL = (input) => input;
 

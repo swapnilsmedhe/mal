@@ -1,4 +1,7 @@
-const { MalNil, MalList, MalValue } = require("./types");
+const { MalNil, MalList, MalValue, MalString } = require("./types");
+const { readStr } = require("./reader");
+const fs = require("fs");
+const { printString } = require("./printer");
 
 const ns = {
   "+": (...numbers) => numbers.reduce((a, b) => a + b, 0),
@@ -28,6 +31,10 @@ const ns = {
   "empty?": (list) => list.isEmpty(),
 
   count: (list) => (list instanceof MalNil ? 0 : list.length()),
+
+  "read-string": (str) => readStr(printString(str)),
+
+  slurp: (filename) => new MalString(fs.readFileSync(filename.value, "utf8")),
 };
 
 module.exports = { ns };

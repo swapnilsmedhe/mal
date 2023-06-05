@@ -1,4 +1,11 @@
-const { MalSymbol, MalList, MalVector, MalNil } = require("./types");
+const {
+  MalSymbol,
+  MalList,
+  MalVector,
+  MalNil,
+  MalString,
+  createMalString,
+} = require("./types");
 
 class Reader {
   #tokens;
@@ -64,7 +71,8 @@ const readAtom = (reader) => {
 
   if (token.startsWith('"')) {
     if (token.endsWith('"') && token.length > 1) {
-      return token;
+      const string = createMalString(token);
+      return new MalString(string.slice(1, -1));
     }
     throw new Error("unbalanced");
   }
@@ -93,10 +101,10 @@ const readForm = (reader) => {
   }
 };
 
-const readString = (str) => {
+const readStr = (str) => {
   const tokens = tokenize(str);
   const reader = new Reader(tokens);
   return readForm(reader);
 };
 
-module.exports = { readString };
+module.exports = { readStr };

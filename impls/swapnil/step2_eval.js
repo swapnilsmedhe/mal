@@ -1,5 +1,5 @@
 const readline = require("readline");
-const { readString } = require("./reader");
+const { readStr } = require("./reader");
 const { printString } = require("./printer");
 const { MalSymbol, MalList, MalValue, MalVector } = require("./types");
 
@@ -15,7 +15,7 @@ const env = {
   "/": (...numbers) => numbers.reduce((a, b) => Math.floor(a / b)),
 };
 
-const READ = (input) => readString(input);
+const READ = (input) => readStr(input);
 
 const evalAst = (ast, env) => {
   if (ast instanceof MalSymbol) {
