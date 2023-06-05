@@ -62,6 +62,13 @@ const readAtom = (reader) => {
     return parseInt(token);
   }
 
+  if (token.startsWith('"')) {
+    if (token.endsWith('"') && token.length > 1) {
+      return token;
+    }
+    throw new Error("unbalanced");
+  }
+
   switch (token) {
     case "true":
       return true;
