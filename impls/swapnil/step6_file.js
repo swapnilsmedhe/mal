@@ -127,6 +127,7 @@ const initEnv = () => {
     env.set(new MalSymbol(symbol), ns[symbol]);
   }
 
+  env.set(new MalSymbol("eval"), (ast) => EVAL(ast, env));
   return env;
 };
 
