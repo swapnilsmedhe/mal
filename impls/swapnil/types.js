@@ -158,7 +158,7 @@ class MalAtom extends MalValue {
   }
 
   toString(printReadably = false) {
-    return "(atom " + printString(this.value) + " )";
+    return "(atom " + printString(this.value) + ")";
   }
 }
 
