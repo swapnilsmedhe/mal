@@ -44,6 +44,7 @@ const ns = {
   "atom?": (value) => value instanceof MalAtom,
   deref: (atom) => atom.deref(),
   "reset!": (atom, value) => atom.reset(value),
+  "swap!": (atom, fn, ...args) => atom.swap(fn, args),
 };
 
 module.exports = { ns };

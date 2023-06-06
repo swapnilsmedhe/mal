@@ -20,7 +20,11 @@ const READ = (input) => readStr(input);
 
 const createClosureFunction = (env, ast) => {
   const [_, binds, fnBody] = ast.value;
-  return new MalFunction(fnBody, binds, env);
+  const fn = (...args) => {
+    const fnEnv = new Env(env, binds.value, args);
+    return EVAL(fnBody, fnEnv);
+  };
+  return new MalFunction(fnBody, binds, env, fn);
 };
 
 const evalDo = (ast, env) => {

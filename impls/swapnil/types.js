@@ -99,10 +99,11 @@ class MalNil extends MalValue {
 }
 
 class MalFunction extends MalValue {
-  constructor(ast, bindings, env) {
+  constructor(ast, bindings, env, fn) {
     super(ast);
     this.bindings = bindings;
     this.env = env;
+    this.fn = fn;
   }
 
   toString(printReadably = false) {
@@ -142,6 +143,17 @@ class MalAtom extends MalValue {
 
   reset(value) {
     this.value = value;
+    return this.value;
+  }
+
+  swap(fn, args) {
+    let actualFn = fn;
+
+    if (fn instanceof MalFunction) {
+      actualFn = fn.fn;
+    }
+
+    this.value = actualFn.apply(null, [this.value, ...args]);
     return this.value;
   }
 
