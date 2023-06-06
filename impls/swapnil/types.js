@@ -39,6 +39,12 @@ class MalSymbol extends MalValue {
   constructor(value) {
     super(value);
   }
+
+  equals(otherMalValue) {
+    return (
+      otherMalValue instanceof MalSymbol && this.value === otherMalValue.value
+    );
+  }
 }
 
 class MalIterable extends MalValue {
@@ -52,6 +58,10 @@ class MalIterable extends MalValue {
 
   length() {
     return this.value.length;
+  }
+
+  begingsWith(symbol) {
+    return this.value.length > 0 && this.value[0].value === symbol;
   }
 
   get(position) {
@@ -74,7 +84,9 @@ class MalList extends MalIterable {
   }
 
   toString(printReadably = false) {
-    return "(" + this.value.map((x) => printString(x)).join(" ") + ")";
+    return (
+      "(" + this.value.map((x) => printString(x, printReadably)).join(" ") + ")"
+    );
   }
 }
 
@@ -130,6 +142,12 @@ class MalString extends MalValue {
 
     return this.value;
   }
+
+  equals(otherMalString) {
+    return (
+      otherMalString instanceof MalString && this.value === otherMalString.value
+    );
+  }
 }
 
 class MalAtom extends MalValue {
@@ -177,5 +195,7 @@ module.exports = {
   MalFunction,
   MalString,
   MalAtom,
+  MalIterable,
   createMalString,
+  deepEqual,
 };

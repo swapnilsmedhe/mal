@@ -1,4 +1,12 @@
-const { MalNil, MalList, MalValue, MalString, MalAtom } = require("./types");
+const {
+  MalNil,
+  MalList,
+  MalValue,
+  MalString,
+  MalAtom,
+  deepEqual,
+  MalVector,
+} = require("./types");
 const { readStr } = require("./reader");
 const fs = require("fs");
 const { printString } = require("./printer");
@@ -11,10 +19,7 @@ const ns = {
   ">": (a, b) => a > b,
   "<": (a, b) => a < b,
 
-  "=": (a, b) => {
-    const areBothMalValue = a instanceof MalValue && b instanceof MalValue;
-    return areBothMalValue ? a.equals(b) : a === b;
-  },
+  "=": (a, b) => deepEqual(a, b),
 
   "<=": (a, b) => a <= b,
   ">=": (a, b) => a >= b,
@@ -45,6 +50,11 @@ const ns = {
   deref: (atom) => atom.deref(),
   "reset!": (atom, value) => atom.reset(value),
   "swap!": (atom, fn, ...args) => atom.swap(fn, args),
+
+  cons: (value, list) => new MalList([value, ...list.value]),
+  concat: (...lists) => new MalList(lists.flatMap((x) => x.value)),
+
+  vec: (list) => new MalVector([...list.value]),
 };
 
 module.exports = { ns };

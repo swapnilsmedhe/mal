@@ -61,14 +61,10 @@ const readVector = (reader) => {
   return new MalVector(ast);
 };
 
-const readDeref = (reader) => {
+const prependSymbol = (reader, symbol) => {
   reader.next();
-  const ast = new MalList([
-    new MalSymbol("deref"),
-    new MalSymbol(reader.peek()),
-  ]);
-
-  return ast;
+  const ast = readForm(reader);
+  return new MalList([new MalSymbol(symbol), ast]);
 };
 
 const readAtom = (reader) => {
@@ -107,7 +103,15 @@ const readForm = (reader) => {
     case "[":
       return readVector(reader);
     case "@":
-      return readDeref(reader);
+      return prependSymbol(reader, "deref");
+    case "'":
+      return prependSymbol(reader, "quote");
+    case "`":
+      return prependSymbol(reader, "quasiquote");
+    case "~":
+      return prependSymbol(reader, "unquote");
+    case "~@":
+      return prependSymbol(reader, "splice-unquote");
     default:
       return readAtom(reader);
   }
