@@ -118,6 +118,10 @@ class MalFunction extends MalValue {
     this.fn = fn;
   }
 
+  apply(context, args) {
+    return this.fn.apply(null, args);
+  }
+
   toString(printReadably = false) {
     return "#function";
   }
@@ -165,13 +169,7 @@ class MalAtom extends MalValue {
   }
 
   swap(fn, args) {
-    let actualFn = fn;
-
-    if (fn instanceof MalFunction) {
-      actualFn = fn.fn;
-    }
-
-    this.value = actualFn.apply(null, [this.value, ...args]);
+    this.value = fn.apply(null, [this.value, ...args]);
     return this.value;
   }
 
