@@ -61,6 +61,16 @@ const readVector = (reader) => {
   return new MalVector(ast);
 };
 
+const readDeref = (reader) => {
+  reader.next();
+  const ast = new MalList([
+    new MalSymbol("deref"),
+    new MalSymbol(reader.peek()),
+  ]);
+
+  return ast;
+};
+
 const readAtom = (reader) => {
   const token = reader.next();
   const isNumber = token.match(/^-?[0-9]+$/);
@@ -96,6 +106,8 @@ const readForm = (reader) => {
       return readList(reader);
     case "[":
       return readVector(reader);
+    case "@":
+      return readDeref(reader);
     default:
       return readAtom(reader);
   }
