@@ -96,7 +96,9 @@ class MalVector extends MalIterable {
   }
 
   toString(printReadably = false) {
-    return "[" + this.value.map((x) => printString(x)).join(" ") + "]";
+    return (
+      "[" + this.value.map((x) => printString(x, printReadably)).join(" ") + "]"
+    );
   }
 }
 
