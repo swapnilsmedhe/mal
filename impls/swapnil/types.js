@@ -64,8 +64,17 @@ class MalIterable extends MalValue {
     return this.value.length > 0 && this.value[0].value === symbol;
   }
 
-  get(position) {
-    return this.value[position];
+  first() {
+    return this.isEmpty() ? new MalNil() : this.value[0];
+  }
+
+  nth(position) {
+    if (this.value[position]) return this.value[position];
+    throw "index out of range";
+  }
+
+  rest() {
+    return new MalList(this.value.slice(1));
   }
 
   equals(otherMalValue) {
@@ -73,7 +82,7 @@ class MalIterable extends MalValue {
     if (this.length() !== otherMalValue.length()) return false;
 
     return this.value.every((element, index) =>
-      deepEqual(element, otherMalValue.get(index))
+      deepEqual(element, otherMalValue.nth(index))
     );
   }
 }
@@ -113,11 +122,12 @@ class MalNil extends MalValue {
 }
 
 class MalFunction extends MalValue {
-  constructor(ast, bindings, env, fn) {
+  constructor(ast, bindings, env, fn, isMacro = false) {
     super(ast);
     this.bindings = bindings;
     this.env = env;
     this.fn = fn;
+    this.isMacro = isMacro;
   }
 
   apply(context, args) {
